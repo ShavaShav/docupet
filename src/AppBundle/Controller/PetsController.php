@@ -2,30 +2,27 @@
 // src/AppBundle/Controller/PetsController.php
 namespace AppBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PetsController
+class PetsController extends AbstractController
 {
     /**
      * @Route("/pets/", name="pet_list")
      */
     public function listAction()
     {
-        return new Response(
-            '<html><body>Pets will show here!</body></html>'
-        );
+        return $this->render('pets/pets.html.twig');
     }
 
     /**
      * @Route("/pets/{slug}", name="pet_show")
      */
-    public function showAction()
+    public function showAction($slug)
     {
-        $number = random_int(0, 100);
-
-        return new Response(
-            '<html><body>Specific pets will show here!</body></html>'
-        );
+        return $this->render('pets/pet.html.twig', [
+            'pet_slug' => $slug,
+        ]);
     }
 }
