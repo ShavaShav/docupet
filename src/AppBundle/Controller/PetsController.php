@@ -16,7 +16,13 @@ class PetsController extends AbstractController
      */
     public function listAction()
     {
-        return $this->render('pets/pets.html.twig');
+        $pets = $this->getDoctrine()
+            ->getRepository(Pet::class)
+            ->findAll();
+
+        return $this->render('pets/index.html.twig', [
+            'pets' => $pets,
+        ]);
     }
 
     /**

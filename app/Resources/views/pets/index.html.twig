@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}- Our Pets{% endblock %}
+
+{% block body %}
+    <h1>Our Pets</h1>
+    <p>
+        Below is a list of our pets, click to see more about them!
+    </p>
+    <ul>
+        {% for pet in pets %}
+            <li> 
+                <a href={{ path('pet_show', { 'petId' : pet.id }) }}>
+                    {{ pet.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

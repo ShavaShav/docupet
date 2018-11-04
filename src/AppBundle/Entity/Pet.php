@@ -24,6 +24,12 @@ class Pet
     private $name;
 
     /**
+     * Name
+     * @ORM\Column(type="string", length=100)
+     */
+    private $species;
+
+    /**
      * Gender (M or F)
      * @ORM\Column(type="string", length=1, nullable=true)
      */
@@ -40,7 +46,7 @@ class Pet
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $neutered;
-
+    
     /**
      * Breed
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -95,6 +101,26 @@ class Pet
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get species
+     */ 
+    public function getSpecies()
+    {
+        return $this->species;
+    }
+
+    /**
+     * Set species
+     *
+     * @return  self
+     */ 
+    public function setSpecies($species)
+    {
+        $this->species = $species;
 
         return $this;
     }
