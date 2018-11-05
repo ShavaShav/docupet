@@ -46,7 +46,7 @@ class PetsController extends Controller
 
     /**
      * Renders paginated list of all pets
-     * @Route("/pets", name="pet_list")
+     * @Route("/pets/", name="pet_list")
      */
     public function listAction(Request $request)
     {
@@ -73,7 +73,7 @@ class PetsController extends Controller
     /**
      * Renders a specific pet's profile page
      * @param [integer] $petId
-     * @Route("/pets/{petId}", name="pet_show")
+     * @Route("/pets/profile/{petId}", name="pet_show")
      */
     public function showAction($petId)
     {
