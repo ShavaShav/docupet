@@ -9,15 +9,20 @@
     <table>
         <tr>
             <td><b>Gender</b></td>
-            <td>{{ pet.breed|default("Unknown") }}</td>
+            <td>
+                {{ 
+                    pet.gender == 'M' ? 'Male' : 
+                    pet.gender == 'F' ? 'Female' : "Unknown" 
+                }}
+            </td>
         </tr>
         <tr>
             <td><b>Birthday</b></td>
-            <td>{{ pet.gender|default("Unknown") }}</td>
+            <td>{{ pet.birthdate.format('M d, Y')|default("Unknown") }}</td>
         </tr>
         <tr>
             <td><b>Neutered</b></td>
-            <td>{{ pet.neutered|default("Unknown") }}</td>
+            <td>{{ (pet.neutered ? "Yes" : "No")|default("Unknown") }}</td>
         </tr>
         <tr>
             <td><b>Breed</b></td>

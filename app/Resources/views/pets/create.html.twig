@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}- Add pet{% endblock %}
+
+{% block body %}
+
+<h2>Add your pet to our database!</h2>
+
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.species) }}
+    {{ form_row(form.gender) }}
+    {{ form_row(form.birth_date) }}
+    {{ form_row(form.neutered) }}
+    {{ form_row(form.breed) }}
+    {{ form_row(form.weight) }}
+    {{ form_row(form.colour) }}
+    {{ form_row(form.description) }}
+    <button type="submit">Add Pet</button>
+{{ form_end(form) }}
+
+{% endblock %}

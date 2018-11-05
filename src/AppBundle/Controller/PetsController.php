@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Pet;
+use AppBundle\Form\PetType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,37 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PetsController extends Controller
 {
+    /**
+     * Renders a specific pet's profile page
+     * @param [integer] $petId
+     * @Route("/pets/create", name="pet_add")
+     */
+    public function createAction(Request $request)
+    {
+        // Build the form
+        $pet = new Pet();
+        $form = $this->createForm(PetType::class, $pet);
+
+        // Handle the create form submission async
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Save pet
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($pet);
+            $entityManager->flush();
+
+            // Reroute user to pet's profile
+            return $this->redirectToRoute('pet_show', array('petId' => $pet->getId()));
+        }
+
+        // Render form
+        return $this->render(
+            'pets/create.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+
     /**
      * Renders paginated list of all pets
      * @Route("/pets", name="pet_list")
@@ -39,7 +71,7 @@ class PetsController extends Controller
     }
         
     /**
-     * Renders a pet's profile page
+     * Renders a specific pet's profile page
      * @param [integer] $petId
      * @Route("/pets/{petId}", name="pet_show")
      */
@@ -59,4 +91,5 @@ class PetsController extends Controller
             'pet' => $pet,
         ]);
     }
+
 }

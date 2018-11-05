@@ -5,8 +5,12 @@
 {% block body %}
     <h1>Our Pets</h1>
     <p>
-        Below is a list of our pets, click to see more about them!
+        Below is a list of our pets, click to see more about them, 
+        or add one of your own!
     </p>
+    <input type="button" 
+        onclick="location.href='{{ path('pet_add') }}';" 
+        value="Add Pet" />
     <ul>
         {% for pet in pets %}
             <li> 
