@@ -4,13 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Pet;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PetsController extends AbstractController
+class PetsController extends Controller
 {
     /**
      * Renders paginated list of all pets
@@ -18,25 +18,23 @@ class PetsController extends AbstractController
      */
     public function listAction(Request $request)
     {
-        $page = 1;
-        $limit = 2;
+        // Get page and limit.
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 2);
 
-        if ($request->query->has('page'))
-            $page = $request->query->get('page');
-
-        if ($request->query->has('limit'))
-            $limit = $request->query->get('limit');
-
-        $pets = $this->getDoctrine()
+        // Form a select all query on pet table
+        $petsQuery = $this->getDoctrine()
             ->getRepository(Pet::class)
-            ->createQueryBuilder('pet')
-            ->setFirstResult($limit * ($page - 1)) // Offset
-            ->setMaxResults($limit); // Limit
+            ->createQueryBuilder('pet');
         
-        $paginator = new Paginator($pets);
+        // Paginate the results of the pets query
+        $pets = $this->get('knp_paginator')->paginate(
+            $petsQuery, $page, $limit
+        );
 
+        // Render results
         return $this->render('pets/index.html.twig', [
-            'pets' => $paginator,
+            'pets' => $pets
         ]);
     }
         
