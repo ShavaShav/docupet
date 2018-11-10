@@ -1,14 +1,15 @@
 <?php
 
-// src/AppBundle/Entity/User.php
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(name="app_users")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity()
  */
 class User implements UserInterface, \Serializable
 {
@@ -21,6 +22,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -28,11 +30,30 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=64)
      */
     private $password;
+    
+    /**
+     * Not persisted, temporary storage from form
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=254, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
 
     public function getUsername()
     {
@@ -48,6 +69,16 @@ class User implements UserInterface, \Serializable
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     public function getRoles()
@@ -78,4 +109,53 @@ class User implements UserInterface, \Serializable
             $this->password
         ) = unserialize($serialized, array('allowed_classes' => false));
     }
+
+    /**
+     * Set the value of username
+     *
+     * @return  self
+     */ 
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  self
+     */ 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+    
+    /**
+     * Set temporary password
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @return  self
+     */ 
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
 }
