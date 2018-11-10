@@ -10,6 +10,7 @@ security:
     providers:
         in_memory:
             memory: ~
+
         db_provider:
             entity:
                 class: AppBundle:User
@@ -22,13 +23,15 @@ security:
             security: false
 
         main:
-            # anonymous: ~
-            # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            pattern:    ^/
+            pattern: ^/pets
             http_basic: ~
             provider: db_provider
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+
+    # access_control:
+    #     # require ROLE_USER for /pets/create*
+    #     - { path: ^/pets/create, roles: ROLE_USER }
