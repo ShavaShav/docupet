@@ -28,6 +28,10 @@ class PetsController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Set the pet's owner to current user
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $pet->setOwner($user);
+
             // Save pet
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($pet);
@@ -87,8 +91,11 @@ class PetsController extends Controller
             );
         }
 
+        $owner = $pet->getOwner();
+
         return $this->render('pets/pet.html.twig', [
             'pet' => $pet,
+            'owner' => $owner
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -50,9 +51,16 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * A user can have many pets
+     * @ORM\OneToMany(targetEntity="Pet", mappedBy="user")
+     */
+    private $pets;
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->pets = new ArrayCollection();
     }
 
     public function getUsername()
@@ -84,6 +92,11 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         return array('ROLE_USER');
+    }
+
+    public function getPets()
+    {
+        return $this->pets;
     }
 
     public function eraseCredentials()
@@ -158,4 +171,15 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    /**
+     * Set user's pets array
+     *
+     * @return  self
+     */ 
+    public function setPets($pets)
+    {
+        $this->pets = $pets;
+
+        return $this;
+    }
 }

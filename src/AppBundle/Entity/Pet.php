@@ -78,6 +78,12 @@ class Pet
     private $description;
 
     /**
+     * User that owns pet
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="pets")
+     */
+    private $owner;
+
+    /**
      * Get the value of id
      */ 
     public function getId()
@@ -281,6 +287,26 @@ class Pet
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+    
+    /**
+     * Get user that owns pet
+     */ 
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set user that owns pet
+     *
+     * @return  self
+     */ 
+    public function setOwner($user)
+    {
+        $this->owner = $user;
 
         return $this;
     }
